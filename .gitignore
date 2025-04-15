@@ -1,9 +1,22 @@
-# Python virtualenv
+# Python virtual environment
 venv/
-__pycache__/
 
-# Environment and secrets
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Environment variables
 .env
 
 # Data files
 data/
+
+# Log files
+*.log
+
+# Local DBs
+*.sqlite
+*.db
