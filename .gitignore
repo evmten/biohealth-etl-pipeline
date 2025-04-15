@@ -1,0 +1,9 @@
+# Python virtualenv
+venv/
+__pycache__/
+
+# Environment and secrets
+.env
+
+# Data files
+data/
