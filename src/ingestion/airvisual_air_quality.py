@@ -20,10 +20,10 @@ def fetch_air_quality_data(city, state, country):
         )
         
         return {
-            "city": city,
-            "country": country,
-            "aqius": pollution["aqius"],
-            "main_pollutant": pollution["mainus"]
+            "City": city,
+            "Country": country,
+            "Aqius": pollution["aqius"],
+            "Main_pollutant": pollution["mainus"]
         }
 
     except Exception as e:

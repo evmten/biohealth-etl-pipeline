@@ -8,17 +8,23 @@ def fetch_health_expenditure_data():
 
     try:
         tables = pd.read_html(url)
-        
-        # Check which table looks right (usually table 0 or 1)
         df = tables[0]
-        logging.info(f"Scraped table with shape: {df.shape}")
+
+        # Keep only Location and 2022 column
+        df = df[["Location", 2022]]
+        df.rename(columns={"Location": "Country", 2022: "HealthExpenditure"}, inplace=True)
+
+        logging.info(f"Scraped and filtered table shape: {df.shape}")
         logging.info("Sample:\n" + str(df.head(3)))
-        # oecd_countries = df["Location"].unique()
-        # df_spending = fetch_health_expenditure_data()
-        
+
+        # Add Year column to allow merging
+        df["Year"] = 2022
+        logging.info(f"Columns: {df.columns.tolist()}")
+
         return df
 
     except Exception as e:
         logging.error(f"Health expenditure scraping failed: {e}")
         return None
+
 

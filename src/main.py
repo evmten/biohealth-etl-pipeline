@@ -85,15 +85,9 @@ def main():
     with open("data/raw/countries_cities.json", "w", encoding="utf-8") as f:
         json.dump(cities, f, indent=4, ensure_ascii=False)
 
-    # with open("data/raw/air_quality_partial.json", "r", encoding="utf-8") as f:
-    #     cities = json.load(f)
-
-    # logging.info("Saved city list to data/raw/countries_cities.json")
-
     df_spending = fetch_health_expenditure_data()
-    df_spending.to_csv("data/raw/health_expenditure.csv", index=False)
     
-    # transform_data(df_life, df_air, df_spending)
+    transform_data(df_life, df_air, df_spending)
 
 if __name__ == "__main__":
     main()
