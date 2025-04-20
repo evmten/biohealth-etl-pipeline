@@ -3,6 +3,7 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator # type: ignore
 from datetime import datetime, timedelta
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator # type: ignore
 
 default_args = {
     'owner': 'airflow',
@@ -23,3 +24,11 @@ with DAG(
         task_id='run_health_etl',
         bash_command='python /opt/airflow/dags/run_etl.py',
     )
+
+
+trigger_validation = TriggerDagRunOperator(
+    task_id='trigger_validation_dag',
+    trigger_dag_id='validate_health_data',
+)
+
+run_etl >> trigger_validation
