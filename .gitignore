@@ -20,3 +20,6 @@ data/
 # Local DBs
 *.sqlite
 *.db
+
+# Ignore Airflow logs
+docker/airflow/logs/
