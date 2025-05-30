@@ -13,10 +13,10 @@ else
 fi
 
 mkdir -p dags
-mkdir -p src/ingestion src/transformation src/validation src/utils
+mkdir -p src/ingestion src/transformation src/validation
 mkdir -p data/raw data/cleaned
-mkdir -p docker/airflow
-mkdir -p notebooks
+mkdir -p airflow
+# mkdir -p notebooks
 mkdir -p sql
 mkdir -p tests
 

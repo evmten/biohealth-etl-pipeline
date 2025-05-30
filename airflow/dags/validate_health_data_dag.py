@@ -19,5 +19,5 @@ with DAG(
 
     run_validation = BashOperator(
         task_id='validate_data',
-        bash_command='python /opt/airflow/dags/validate_data.py',
+        bash_command='python /opt/airflow/src/validation/validate_health_data.py',
     )

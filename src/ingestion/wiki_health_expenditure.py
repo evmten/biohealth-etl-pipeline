@@ -19,7 +19,6 @@ def fetch_health_expenditure_data():
         logging.info(f"Scraped and filtered table shape: {df.shape}")
         logging.info("Sample:\n" + str(df.head(3)))
 
-        # Add Year column to allow merging
         df["Year"] = 2022
         logging.info(f"Columns: {df.columns.tolist()}")
         

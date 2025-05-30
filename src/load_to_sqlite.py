@@ -3,46 +3,36 @@ import sqlite3
 import os
 import json
 
-# Define paths
-csv_path = "data/cleaned/merged_health_data.csv"
-db_path = "data/health_data.db"
+csv_path = "../data/cleaned/merged_health_data.csv"
+db_path = "../data/health_data.db"
 table_name = "health_data"
 
-# Ensure the cleaned data file exists
 if not os.path.exists(csv_path):
     raise FileNotFoundError(f"CSV file not found at {csv_path}")
 
-# Load the cleaned data
 df = pd.read_csv(csv_path)
 
-# Connect to SQLite (creates DB if it doesn't exist)
 conn = sqlite3.connect(db_path)
 
-# Load and save raw life expectancy CSV
-df_life_raw = pd.read_csv("data/raw/life_expectancy.csv")
+df_life_raw = pd.read_csv("../data/raw/life_expectancy.csv")
 df_life_raw.to_sql("raw_life_expectancy", conn, if_exists="replace", index=False)
 
-# Load and save raw air quality JSON
-with open("data/raw/air_quality_partial.json", encoding="utf-8") as f:
+with open("../data/raw/air_quality_partial.json", encoding="utf-8") as f:
     air_data = json.load(f)
 df_air_raw = pd.DataFrame(air_data)
 df_air_raw.to_sql("raw_air_quality", conn, if_exists="replace", index=False)
 
-# Load and save raw health spending CSV
-df_spending_raw = pd.read_csv("data/raw/health_expenditure.csv")
+
+df_spending_raw = pd.read_csv("../data/raw/health_expenditure.csv")
 df_spending_raw.to_sql("raw_health_expenditure", conn, if_exists="replace", index=False)
 
-# Load and save merged health data CSV
-df_merged_health_data = pd.read_csv("data/cleaned/merged_health_data.csv")
+df_merged_health_data = pd.read_csv("../data/cleaned/merged_health_data.csv")
 df_merged_health_data.to_sql("merged_health_data", conn, if_exists="replace", index=False)
 
-# Write the DataFrame to the SQLite DB
 df.to_sql(table_name, conn, if_exists="replace", index=False)
 
-# Confirm it worked
 print(f"Successfully loaded {len(df)} rows into '{table_name}' table in '{db_path}'")
 
-# Optional: Preview a few rows
 print(df.head())
 
 # Top 5 countries by life expectancy
@@ -123,7 +113,6 @@ df_records_health_expenditure = pd.read_sql_query(query, conn)
 print(df_records_health_expenditure)
 
 
-# Other queries
 print("\n Preview sample records:")
 query = """
     SELECT * FROM raw_air_quality LIMIT 5;
@@ -134,7 +123,7 @@ print(df_samples_air_quality)
 
 print("\n Compare raw vs clean: countries present in raw but missing from final:")
 query = """
-    SELECT DISTINCT Location FROM raw_health_expenditure
+    SELECT DISTINCT Country FROM raw_health_expenditure
     EXCEPT
     SELECT DISTINCT Country FROM merged_health_data;
     """
@@ -142,5 +131,4 @@ query = """
 df_raw_vs_clean = pd.read_sql_query(query, conn)
 print(df_raw_vs_clean)
 
-# Close connection
 conn.close()

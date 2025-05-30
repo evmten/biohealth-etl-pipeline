@@ -4,7 +4,6 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 import os
 from dotenv import load_dotenv
-from pprint import pprint
 
 load_dotenv()
 
@@ -49,7 +48,6 @@ def fetch_life_expectancy_data(path="data/raw/life_expectancy.csv"):
         logging.info(f"Parsed life expectancy records: {df.shape}")
         logging.info(f"Sample:\n{df.head(3)}")
 
-        # Save to local CSV so next time you don't request again
         os.makedirs(os.path.dirname(path), exist_ok=True)
         df.to_csv(path, index=False)
 

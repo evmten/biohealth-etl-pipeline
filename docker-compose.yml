@@ -13,10 +13,9 @@ x-airflow-common: &airflow-common
     - .env
   volumes:
     - ./airflow/logs:/opt/airflow/logs
-    - ./airflow/plugins:/opt/airflow/plugins
     - ./airflow/dags:/opt/airflow/dags
-    - ./airflow/src:/opt/airflow/src
-    - ./airflow/data:/opt/airflow/data
+    - ./src:/opt/airflow/src
+    - ./data:/opt/airflow/data
     - airflow_db:/opt/airflow
   user: "${AIRFLOW_UID:-50000}:0"
 
@@ -38,4 +37,4 @@ services:
     command: scheduler
 
 volumes:
-  airflow_db:  # 👈 this ensures sqlite DB is saved
+  airflow_db: 
