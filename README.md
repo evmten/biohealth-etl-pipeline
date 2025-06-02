@@ -74,7 +74,7 @@ Health expenditure per capita
 4. Validate Data 
 - The pipeline triggers validate_health_data DAG automatically for validation checks.
 
-5. Run SQLite queries (optional) 
+5. Run SQLite queries (*optional) 
 - Use a SQLite viewer or run:
 <pre> python src/load_to_sqlite.py </pre>
 
