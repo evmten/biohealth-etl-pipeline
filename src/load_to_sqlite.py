@@ -10,10 +10,12 @@ table_name = "health_data"
 if not os.path.exists(csv_path):
     raise FileNotFoundError(f"CSV file not found at {csv_path}")
 
+# Load merged data
 df = pd.read_csv(csv_path)
 
 conn = sqlite3.connect(db_path)
 
+# Load and store raw datasets
 df_life_raw = pd.read_csv("../data/raw/life_expectancy.csv")
 df_life_raw.to_sql("raw_life_expectancy", conn, if_exists="replace", index=False)
 
@@ -26,9 +28,11 @@ df_air_raw.to_sql("raw_air_quality", conn, if_exists="replace", index=False)
 df_spending_raw = pd.read_csv("../data/raw/health_expenditure.csv")
 df_spending_raw.to_sql("raw_health_expenditure", conn, if_exists="replace", index=False)
 
+# Store merged data
 df_merged_health_data = pd.read_csv("../data/cleaned/merged_health_data.csv")
 df_merged_health_data.to_sql("merged_health_data", conn, if_exists="replace", index=False)
 
+# Store main table
 df.to_sql(table_name, conn, if_exists="replace", index=False)
 
 print(f"Successfully loaded {len(df)} rows into '{table_name}' table in '{db_path}'")

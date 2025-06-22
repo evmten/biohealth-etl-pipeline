@@ -1,6 +1,12 @@
+"""
+This script fetches life expectancy, air quality, and health expenditure data,
+transforms it and saves the merged dataset for further use
+"""
+
 import logging
 import json
 import time
+import pandas as pd
 
 from ingestion.oecd_life_expectancy import fetch_life_expectancy_data
 from ingestion.airvisual_air_quality import fetch_air_quality_data
@@ -12,13 +18,15 @@ logging.basicConfig(level=logging.INFO)
 
 def main():
 
+    # Fetch and save life expectancy data
     df_life = fetch_life_expectancy_data()
     df_life.to_csv("../data/raw/life_expectancy.csv", index=False)
     
     air_quality_results = []
     batch_size = 5
-    sleep_after_batch = 65  # sec
+    sleep_after_batch = 65  # seconds
 
+    # Fetch air quality data in batches to respect API rate limits
     for i, loc in enumerate(cities):
         logging.info(f"Requesting data for {loc['city']}, {loc['country']} ({i+1}/{len(cities)})")
 
@@ -31,15 +39,15 @@ def main():
         else:
             if result:
                 air_quality_results.append(result)
-        
+
+    # Save fetched air quality data    
     with open("../data/raw/air_quality_partial.json", "w", encoding="utf-8") as f:
         json.dump(air_quality_results, f, indent=4, ensure_ascii=False)
 
-
-    import pandas as pd
     df_air = pd.DataFrame(air_quality_results)
     print(df_air.head())
 
+    # Save cities metadata
     with open("../data/raw/countries_cities.json", "w", encoding="utf-8") as f:
         json.dump(cities, f, indent=4, ensure_ascii=False)
 

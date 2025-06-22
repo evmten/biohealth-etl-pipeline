@@ -3,7 +3,7 @@ FROM python:3.11-slim
 # Set working directory inside container
 WORKDIR /app
 
-# Copy your project files into the container
+# Copy the project files into the container
 COPY . .
 
 # Install dependencies

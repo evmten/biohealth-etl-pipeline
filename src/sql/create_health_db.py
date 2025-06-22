@@ -1,8 +1,10 @@
 import sqlite3
 
+# Connect to SQLite database
 conn = sqlite3.connect("data/health_data.db")
 cursor = conn.cursor()
 
+# Create table if not already exists
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS health_data (
     Country TEXT,

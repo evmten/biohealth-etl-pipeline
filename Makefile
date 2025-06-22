@@ -1,5 +1,5 @@
 setup:
-	@echo "🔧 Setting up environment..."
+	@echo "Setting up environment"
 	python3 -m venv venv
 	source venv/bin/activate && pip install -r requirements.txt
 	mkdir -p dags src/ingestion src/transformation src/validation src/utils
@@ -7,14 +7,14 @@ setup:
 	touch Dockerfile docker-compose.yml requirements.txt README.md .env
 
 run-airflow:
-	@echo "🚀 Starting Airflow with Docker..."
+	@echo "Starting Airflow with Docker"
 	docker-compose up airflow-init
 	docker-compose up
 
 stop:
-	@echo "🛑 Stopping Docker containers..."
+	@echo "Stopping Docker containers"
 	docker-compose down
 
 clean:
-	@echo "🧹 Cleaning environment..."
+	@echo "Cleaning environment"
 	rm -rf venv __pycache__ .pytest_cache .env

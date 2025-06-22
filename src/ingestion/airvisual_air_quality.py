@@ -3,9 +3,11 @@ import logging
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv() # Load API key from .env file
 
 def fetch_air_quality_data(city, state, country):
+    
+    # API request URL
     api_key = os.getenv("IQAIR_API_KEY")
     url = f"http://api.airvisual.com/v2/city?city={city}&state={state}&country={country}&key={api_key}"
     
@@ -14,6 +16,7 @@ def fetch_air_quality_data(city, state, country):
         response.raise_for_status()
         data = response.json()
         
+        # Extract pollution data
         pollution = data['data']['current']['pollution']
         logging.info(
             f"{city}, {country} — AQI (US): {pollution['aqius']}, Main: {pollution['mainus']}"

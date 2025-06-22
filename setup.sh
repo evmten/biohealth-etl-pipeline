@@ -1,15 +1,15 @@
 #!/bin/bash
 
-echo "🔧 Setting up your data pipeline project environment..."
+echo "Setting up your data pipeline project environment..."
 
 python3 -m venv venv
 source venv/bin/activate
 
 if [ -f "requirements.txt" ]; then
-    echo "📚 Installing Python dependencies..."
+    echo "Installing Python dependencies..."
     pip install -r requirements.txt
 else
-    echo "⚠️  No requirements.txt found. Skipping install."
+    echo "No requirements.txt found."
 fi
 
 mkdir -p dags
@@ -22,4 +22,4 @@ mkdir -p tests
 
 touch Dockerfile docker-compose.yml requirements.txt README.md .env
 
-echo "✅ All set up!"
+echo "Set up is done!"

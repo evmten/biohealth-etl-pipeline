@@ -1,6 +1,7 @@
 import pandas as pd
 import logging
 
+# Clean life expectancy data
 def clean_life_expectancy(path="/opt/airflow/data/raw/life_expectancy.csv"):
     df = pd.read_csv(path)
 
@@ -14,7 +15,8 @@ def clean_life_expectancy(path="/opt/airflow/data/raw/life_expectancy.csv"):
     
     df = pd.concat([df, df_total], ignore_index=True)
     df = df[df["Sex"] == "T"]
-
+    
+    # Map ISO3 codes to country names
     iso3_to_name = {
         "AUS": "Australia", "AUT": "Austria", "BEL": "Belgium", 
         "CAN": "Canada", "CHL": "Chile", "COL": "Colombia","CRI": "Costa Rica", 
@@ -30,6 +32,8 @@ def clean_life_expectancy(path="/opt/airflow/data/raw/life_expectancy.csv"):
 
     df["Country"] = df["Country"].map(iso3_to_name).fillna(df["Country"])
     df["Year"] = df["Year"].astype(int)
+
+    # Keep only total records from 2022
     df = df[df["Year"]==2022]
     df = df[df["Sex"] == "T"]
 
@@ -37,6 +41,7 @@ def clean_life_expectancy(path="/opt/airflow/data/raw/life_expectancy.csv"):
 
     return df
 
+# Clean air quality data
 def clean_air_quality(path="/opt/airflow/data/raw/air_quality_partial.json"):
     df = pd.read_json(path)
 
@@ -51,11 +56,13 @@ def clean_air_quality(path="/opt/airflow/data/raw/air_quality_partial.json"):
 
     return df
 
+# Clean health expenditure data
 def clean_health_expenditure(path="/opt/airflow/data/raw/health_expenditure.csv"):
     df = pd.read_csv(path)
     logging.info(f"Sample:\n{df.head(3)}")
     return df
 
+# Transform and merge all datasets
 def transform_data(df_life, df_air, df_spending):
     logging.info("Starting data transformation...")
 
@@ -63,15 +70,17 @@ def transform_data(df_life, df_air, df_spending):
     df_air = clean_air_quality()
     df_spending = clean_health_expenditure()
 
+    # Check common countries across all datasets
     common = set(df_life["Country"]) & set(df_air["Country"]) & set(df_spending["Country"])
     print("Common countries:", sorted(common))
     print("Missing from life:", sorted(set(df_spending["Country"]) - set(df_life["Country"])))
     print("Missing from air:", sorted(set(df_spending["Country"]) - set(df_air["Country"])))
 
-
+    # Merge life expectancy and spending
     df_merged = pd.merge(df_life, df_spending, on=["Country", "Year"], how="inner")
     df_merged.to_csv("/opt/airflow/data/cleaned/merged_life_spending.csv", index=False)
 
+    # Merge with air quality
     df_final = pd.merge(df_merged, df_air, on=["Country"], how="inner")
 
     logging.info(f"Final dataset shape: {df_final.shape}")

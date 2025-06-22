@@ -7,8 +7,8 @@ def fetch_health_expenditure_data():
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_total_health_expenditure_per_capita"
 
     try:
-        tables = pd.read_html(url)
-        df = tables[0]
+        tables = pd.read_html(url) # Read all HTML tables from the page
+        df = tables[0] # Use the first table
 
         if "2022" not in df.columns:
             raise ValueError("2022 column not found in Wikipedia table.")
@@ -19,7 +19,7 @@ def fetch_health_expenditure_data():
         logging.info(f"Scraped and filtered table shape: {df.shape}")
         logging.info("Sample:\n" + str(df.head(3)))
 
-        df["Year"] = 2022
+        df["Year"] = 2022 # Add a Year column for merging consistency
         logging.info(f"Columns: {df.columns.tolist()}")
         
         return df

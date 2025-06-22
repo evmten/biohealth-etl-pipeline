@@ -5,16 +5,18 @@ import xml.etree.ElementTree as ET
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv() # Load environment variables
 
 
 def fetch_life_expectancy_data(path="data/raw/life_expectancy.csv"):
+    # Load from file if already downloaded
     if os.path.exists(path):
         logging.info(f"Loading life expectancy data from local file: {path}")
         return pd.read_csv(path)
 
     logging.info("Fetching life expectancy data from OECD API...")
 
+    # OECD SDMX API endpoint for life expectancy data
     url = (
         "https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_REG_HEALTH@DF_HEALTH,"
         "/A.CTRY.CHE+USA+GBR+TUR+SWE+ESP+SVN+SVK+PRT+POL+NOR+NZL+NLD+MEX+LUX+LTU+LVA+KOR+JPN"
@@ -32,6 +34,7 @@ def fetch_life_expectancy_data(path="data/raw/life_expectancy.csv"):
 
         ns = {'generic': 'http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic'}
 
+        # Extract observations from XML
         records = []
         for obs in root.findall('.//generic:Obs', ns):
             keys = {v.attrib['id']: v.attrib['value'] for v in obs.find('generic:ObsKey', ns)}
@@ -48,6 +51,7 @@ def fetch_life_expectancy_data(path="data/raw/life_expectancy.csv"):
         logging.info(f"Parsed life expectancy records: {df.shape}")
         logging.info(f"Sample:\n{df.head(3)}")
 
+        # Save to file
         os.makedirs(os.path.dirname(path), exist_ok=True)
         df.to_csv(path, index=False)
 
