@@ -58,7 +58,7 @@ Health expenditure per capita
 #### Step-by-Step Guide
 1. Clone the repo
 <pre> git clone https://github.com/evmten/health-data-pipeline.git </pre>
-<pre> cd health-data-pipeline </pre>
+<pre> cd biohealth-etl-pipeline </pre>
 
 2. Start Airflow containers
 <pre> docker-compose up --build </pre>
