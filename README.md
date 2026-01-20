@@ -88,3 +88,21 @@ Run the tests after the DAG completes:
 Tests include: 
 - Data transformation logic (life expectancy, air quality, health spending) 
 - Database connection and data integrity (SQLite)
+
+### Dashboard Overview
+
+The dashboard explores the relationship between air quality, life expectancy, and health expenditure across countries (2022).
+
+<img src="dashboard_overview.png" width="800">
+
+Key elements:
+- Health expenditure and life expectancy are compared across countries to provide spending context.
+- A scatter plot shows how life expectancy relates to air quality, with bubble size representing health expenditure and color indicating the main pollutant.
+- Countries are ranked by life expectancy to highlight top performers.
+- A correlation metric summarizes the overall relationship between air quality and life expectancy across countries.
+
+#### Key Insights
+
+- Countries with poorer air quality tend to have lower life expectancy, even when health expenditure is relatively high.
+- Higher health spending alone does not guarantee better outcomes if air quality is poor.
+- The correlation between air quality and life expectancy is moderately negative (–0.59), suggesting a meaningful but not exclusive relationship.
